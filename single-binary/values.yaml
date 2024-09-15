@@ -1,0 +1,18 @@
+git:
+  regional:
+    image_repo: gitlab/gitlab-ce
+    version_tag: 17.1.6-ce.0
+    host: "my-gitlab"
+    ingressClassName: "nginx"
+    namespace: gitlab
+    storage_class: "standrad"
+    tls_cert: ""
+    tls_key: ""
+    s3_endpoint: ""
+    s3_location: us-west-1
+    s3_bucket_name: ""
+    s3_access_key: ""
+    s3_secret_key: ""
+    restore:
+      enable: false
+      snapshot_file_name: regional_gitlab_backup.tar

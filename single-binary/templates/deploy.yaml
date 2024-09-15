@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-regional-service
+  namespace: {{ required "namespace" .Values.git.regional.namespace }}
+  labels:
+    app: gitlab
+spec:
+  ports:
+  - port: 80
+    name: gitlab-http
+  - port: 443
+    name: gitlab-https
+  clusterIP: None
+  selector:
+    app: gitlab
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gitlab-regional
+  namespace: {{ required "namespace" .Values.git.regional.namespace }}
+spec:
+  serviceName: gitlab-regional-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+        - name: gitlab
+          image: {{ .Values.git.regional.image_repo }}:{{ .Values.git.regional.version_tag }}
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: 3750m
+              memory: 3096Mi
+          env:
+            - name: hostname 
+              value: {{ .Values.git.regional.host }}
+            - name: NAME
+              value: "gitlab"
+            - name: restart
+              value: "always"
+            - name: GITLAB_OMNIBUS_CONFIG
+              value: "external_url 'http://{{ .Values.git.regional.host }}'"
+          ports:
+            - name: gitlab-80
+              containerPort: 80
+            - name: gitlab-443
+              containerPort: 443
+            - name: gitlab-22
+              containerPort: 22
+          volumeMounts:
+            - name: gitlab-volume
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: gitlab-volume
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "50Gi"
+        storageClassName: {{ .Values.git.regional.storage_class }}
+
+
+
