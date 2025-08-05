@@ -29,10 +29,37 @@ JSON_PAYLOAD=$(cat <<EOF
 EOF
 )
 
-# Send the POST request to create the user
-# --header "PRIVATE-TOKEN: ${TOKEN_VALUE}" \
-curl -k -X POST \
+# Create User
+USER_INFO=$(curl -k -X POST \
      --header "PRIVATE-TOKEN: ${TOKEN_VALUE}" \
      --header "Content-Type: application/json" \
      --data "${JSON_PAYLOAD}" \
-     "${GITLAB_URL}/api/v4/users"
+     "${GITLAB_URL}/api/v4/users")
+USER_ID=$(echo $USER_INFO | jq .id | awk '{print $2}')
+
+# Create TOKEN 
+curl --request POST \
+     --header "PRIVATE-TOKEN: ${TOKEN_VALUE}" \
+     --header "Content-Type: application/json" \
+     --data '{
+         "name": "'"${USER_NAME}"'",
+         "user_id"
+         "scopes": ["api", "read_repository"],
+         "expires_at": "2026-08-01" 
+     }' \
+     "${GITLAB_URL}/api/v4/users/${USER_ID}/personal_access_tokens"
+
+
+TOKEN_NAME="My Read TOKEN"
+TOKEN_EXP="YYYY-MM-DD"
+USER_ID=4
+TOKEN_INFO=$(curl -k --request POST \
+  --header "PRIVATE-TOKEN: ${TOKEN_VALUE}" \
+  --data "name=${TOKEN_NAME}" --data "expires_at=${TOKEN_EXP}" \
+  --data "scopes[]=api" --data "scopes[]=read_repository" \
+  --url "${GITLAB_URL}/api/v4/users/${USER_ID}/personal_access_tokens")
+
+USER_TOKEN=$(echo $TOKEN_INFO | jq .token )
+
+echo "Find user token details: $USER_NAME $TOKEN_NAME $USER_TOKEN"
+
