@@ -59,7 +59,7 @@ spec:
     - argocd.${DOMAIN}
     secretName: $ARGOCD_SERVICE_NAME-tls-secret
 EOF
-
+echo "127.0.0.1 argocd.${DOMAIN}" >> /etc/hosts
 
 
 # Install Git 
@@ -100,3 +100,6 @@ EOF
 
 helm template gitlab . -f my-values.yaml --timeout 600s --create-namespace --namespace ${GITLAB_NS} > gitlab-out.yaml
 helm upgrade --install gitlab . -f my-values.yaml --timeout 600s --create-namespace --namespace ${GITLAB_NS}
+
+echo "127.0.0.1 argocd.${DOMAIN}" >> /etc/hosts
+
