@@ -37,10 +37,10 @@ spec:
         - name: gitlab
           image: {{ .Values.git.regional.image_repo }}:{{ .Values.git.regional.version_tag }}
           imagePullPolicy: "IfNotPresent"
-          resources:
-            requests:
-              cpu: 3750m
-              memory: 3096Mi
+          # resources:
+          #   requests:
+          #     cpu: 3750m
+          #     memory: 3096Mi
           env:
             - name: hostname 
               value: {{ .Values.git.regional.host }}

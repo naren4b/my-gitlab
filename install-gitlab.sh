@@ -7,7 +7,7 @@ export ING_CLASS="nginx"
 
 
 git clone https://github.com/naren4b/my-gitlab.git
-cd my-gitlab
+cd my-gitlab/single-binary
 
 bash create-root-certificate.sh
 bash create-git-certificate.sh
@@ -19,7 +19,7 @@ kubectl create secret generic -n $NS gitlab-tls-secret \
             --from-file=ca.crt=$CERT_DIR/ca.crt  -o yaml > gitlab-tls-secret.yaml
 
 
-cat<<EOF > single-binary/my-values.yaml
+cat<<EOF > my-values.yaml
 git:
   regional:
     image_repo: gitlab/gitlab-ce
@@ -27,7 +27,7 @@ git:
     host: "git.${DOMAIN}" 
     ingressClassName: "${ING_CLASS}" # TODO
     namespace: ${NS} 
-    storage_class: "{STORAGE_CLASS}" # TODO 
+    storage_class: "${STORAGE_CLASS}" # TODO 
     s3_endpoint: ""
     s3_location: us-west-1
     s3_bucket_name: ""
@@ -38,4 +38,4 @@ git:
       snapshot_file_name: regional_gitlab_backup.tar
 EOF
 
-helm upgrade --install gitlab . --timeout 600s --create-namespace --namespace ${NS}
+helm template gitlab . -f my-values.yaml --timeout 600s --create-namespace --namespace ${NS} > gitlab-out.yaml
