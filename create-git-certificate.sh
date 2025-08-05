@@ -1,3 +1,4 @@
+# Create git TLS Certificate 
 mkdir -p $CERT_DIR/$GIT_SERVICE_NAME
 
 # Client key and csr

@@ -1,4 +1,4 @@
-# Create Certificate 
+# Create root Certificate 
 
 mkdir -p $CERT_DIR
 

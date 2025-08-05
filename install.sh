@@ -66,10 +66,6 @@ echo "127.0.0.1 argocd.${DOMAIN}" >> /etc/hosts
 git clone https://github.com/naren4b/my-gitlab.git
 cd my-gitlab
 
-
-
-
-
 bash create-git-certificate.sh
 
 kubectl create namespace $GITLAB_NS

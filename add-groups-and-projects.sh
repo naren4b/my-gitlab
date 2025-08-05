@@ -1,5 +1,6 @@
 TOKEN_VALUE=$1 
 
+# Create Group 
 GROUP_NAME="My New Group"
 GROUP_PATH="my-new-group"
 GROUP_DESCRIPTION="A group created via API"
@@ -12,6 +13,7 @@ GROUP_INFO=$(curl -k --request POST --header "Private-Token: ${TOKEN_VALUE}" \
 
 GROUP_ID=$(echo $GROUP_INFO | jq .id)
 
+# Create project 
 PROJECT_NAME="My Test Project"
 PROJECT_PATH="my-project"
 PROJECT_VISIBILITY="private"

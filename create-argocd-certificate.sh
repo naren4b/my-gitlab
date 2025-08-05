@@ -1,3 +1,4 @@
+# Create Argocd Certificates 
 mkdir -p $CERT_DIR/$ARGOCD_SERVICE_NAME
 
 # Client key and csr
