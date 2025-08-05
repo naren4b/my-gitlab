@@ -63,6 +63,7 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: gitlab-volume
+        namespace: {{ required "namespace" .Values.git.regional.namespace }}
       spec:
         accessModes:
           - "ReadWriteOnce"

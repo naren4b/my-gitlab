@@ -1,7 +1,10 @@
 export DOMAIN=naren.local # TODO Change this  
 export CERT_DIR=$DOMAIN
 export SERVICE_NAME=git # TODO change it 
-export NS=gitlab
+export NS="gitlab"
+export STORAGE_CLASS="local-path"
+export ING_CLASS="nginx"
+
 
 git clone https://github.com/naren4b/my-gitlab.git
 cd my-gitlab
@@ -22,9 +25,9 @@ git:
     image_repo: gitlab/gitlab-ce
     version_tag: 17.1.6-ce.0
     host: "git.${DOMAIN}" 
-    ingressClassName: "nginx" # TODO
+    ingressClassName: "${ING_CLASS}" # TODO
     namespace: ${NS} 
-    storage_class: "standrad" # TODO 
+    storage_class: "{STORAGE_CLASS}" # TODO 
     s3_endpoint: ""
     s3_location: us-west-1
     s3_bucket_name: ""
@@ -35,3 +38,4 @@ git:
       snapshot_file_name: regional_gitlab_backup.tar
 EOF
 
+helm upgrade --install gitlab . --timeout 600s --create-namespace --namespace ${NS}
