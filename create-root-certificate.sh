@@ -1,8 +1,6 @@
-#Create Certificate 
+# Create Certificate 
 
-DOMAIN=naren.local # TODO Change this  
-mkdir -p $DOMAIN
-CERT_DIR=$DOMAIN
+mkdir -p $CERT_DIR
 
 # root certificate 
 openssl req -x509 -sha256 -newkey rsa:2048  -keyout $CERT_DIR/ca.key -out $CERT_DIR/ca.crt \
