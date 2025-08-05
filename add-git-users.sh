@@ -1,6 +1,6 @@
 
 TOKEN_NAME=root-1
-TOKEN_VALUE=glpat-VN8LuQVRB6BvK-gseQ1F
+TOKEN_VALUE=TEST_TOKEN #glpat-VN8LuQVR1234K-gseQ1F 
 GIT_RAILS_COMMAND="token = User.find_by_username('root').personal_access_tokens.create(scopes: [:api], name: '$TOKEN_NAME', expires_at: Date.today + 1.days); token.set_token('$TOKEN_VALUE'); token.save!"
 echo $GIT_RAILS_COMMAND
 kubectl exec -it -n gitlab gitlab-regional-0 -- gitlab-rails runner "$GIT_RAILS_COMMAND"
